@@ -2,14 +2,20 @@ import Head from "next/head";
 import Image from "next/image";
 import logo from "../public/assets/logo.png";
 import styles from "@/styles/Home.module.css";
-import Counter from "@/components/Counter";
-import HomeComponent from "@/components/Home";
-import Headers from "@/components/Header";
 import { useRouter } from "next/router";
 import TypewriterComponent from "typewriter-effect";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
+  useEffect(() => {
+    if (
+      localStorage.getItem("type") == "Student" ||
+      localStorage.getItem("type") == "Teacher"
+    ) {
+      router.push("/home");
+    }
+  }, []);
   return (
     <div className="w-screen h-screen bg-gradient-to-t from-purple-50 to-purple-100">
       <div className="flex flex-row justify-between items-center pt-4 px-12">

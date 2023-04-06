@@ -1,17 +1,18 @@
 import connectDB from "@/lib/connect";
-import User from "../../models/User.js";
+import Student from "@/models/Student";
+import Teacher from "@/models/Teacher";
 import jwt from "jsonwebtoken";
 
 const validate = async (req, res) => {
   if (req.method == "POST") {
-    console.log(process.env.NEXT_PUBLIC_API);
-    const user = await User.findOne({ email: req.body.email });
-    if (user.password == req.body.password) {
-      const token = jwt.sign({ _id: user._id }, process.env.NEXT_PUBLIC_API, {
-        expiresIn: "1d",
-      });
-      res.json({ token: token });
+    const student = await Student.findOne({ email: req.body.email });
+    if (student.password == req.body.password) {
+      res.json({ token: student._id, type: "Student" });
     } else {
+      const teacher = await Teacher.findOne({ email: req.body.email });
+      if (teacher.password == req.body.password) {
+        res.json({ token: student._id, type: "Teacher" });
+      }
       res.json({ token: "" });
     }
   }

@@ -1,4 +1,3 @@
-import Headers from "@/components/Header";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -9,11 +8,9 @@ export default function Login() {
   const router = useRouter();
   const [validateInfo, setValidateInfo] = useState({});
   const login = async () => {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API}` + "login",
-      validateInfo
-    );
-    localStorage.setItem("userInfo", JSON.stringify(response.data));
+    const response = await axios.post("/api/login", validateInfo);
+    localStorage.setItem("userInfo", response.data.token);
+    localStorage.setItem("type", response.data.type);
     router.push("/home");
   };
   const change = (props) => (e) => {
